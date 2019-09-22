@@ -1,0 +1,26 @@
+@charset "EUC-KR";
+
+
+.neo_wrapper {
+	margin: auto;
+	margin-top: 5em;
+	width: 80%;
+}
+
+.neo_table {
+	text-align: center;	
+}
+
+.neo_header {
+	margin-bottom: 50px;
+	color: #0066cc;
+	font-weight: bolder;
+}
+
+.neo_info_box {
+	text-align: right;
+}
+
+.neo_title {
+	font-size: 20px;
+}

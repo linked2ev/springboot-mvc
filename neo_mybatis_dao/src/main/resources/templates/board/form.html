@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<meta charset="UTF-8" />
+
+<header th:include="fragments/header"></header>
+
+<body>
+	<div class="neo_wrapper">
+
+		<div class="col-md-6 offset-md-3">
+			<div>
+				<div>
+					<h2 class="mb-0 neo_header">게시판 수정</h2>
+					<div class="neo_info_box">
+						작성자: <span th:text="${detail.regId}">regId</span>
+						(<span th:text="${detail.regDate}">regDate</span>)
+					</div>
+					<div class="neo_info_box" th:if="${detail.modId}">
+						수정자: <span th:text="${detail.modId}">modId</span>
+						(<span th:text="${detail.modDate}">modDate</span>)
+					</div>
+					<div class="neo_info_box">
+						조회수: <span th:text="${detail.hitCnt}">hitCnt</span>
+					</div>
+					<br><br>
+				</div>
+
+				<div>
+					<form name="frm" id="frm" class="form" role="form" autocomplete="off">
+						<input type="hidden" name="boardIdx" id="boardIdx" th:value="${detail.boardIdx}" />
+						
+					<fieldset>
+						<label for="displayYn" class="mb-0 neo_title">게시 상태</label>
+						<div class="row mb-1">
+							<div class="col-lg-12">
+								<input type="checkbox" name="displayYn" th:checked="${displayYn == 'Y'}" value="Y"
+									data-toggle="toggle" data-on="게시글 노출" data-off="게시글 숨김" data-onstyle="success" data-offstyle="danger">
+							</div>
+						</div><br>
+						
+						<label for="title" class="mb-0 neo_title">제목</label>
+						<div class="row mb-1">
+							<div class="col-lg-12">
+								<input type="text" name="title" id="title" th:value="${detail.title}" class="form-control" required>
+							</div>
+						</div><br>
+						
+						<label for="contents" class="mb-0 neo_title">내용</label>
+						<div class="row mb-1">
+							<div class="col-lg-12">
+								<textarea rows="6" name="contents" id="contents" th:text="${detail.contents}" class="form-control" required></textarea>
+							</div>
+						</div><br>
+						
+						<button type="button" class="btn btn-primary btn-lg float-right" th:onclick="|javascript:fnSubmit()|">게시글 등록</button>
+					</fieldset>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<script>
+function fnSubmit (){
+	var f = document.querySelector('form[name=frm]');
+	$.ajax({
+		url    : '/board/formProc',
+		method : 'post',
+		data   : $(f).serializeObject(),
+		//contentType: 'application/json; charset=UTF-8', //요청 데이터 타입: post시 json이기에 controller에서 model 못받음
+		dataType: 'json',
+		success:function(data){
+			alert(data.rMsg);
+			location.href = '/board/list';
+		}
+	})
+}
+</script>
+	
+</body>
+</html>

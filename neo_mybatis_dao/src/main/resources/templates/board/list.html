@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<meta charset="UTF-8" />
+
+<header th:include="fragments/header"></header>
+	
+<body>
+	<div class="neo_wrapper">
+			
+		<form name="sFrm" id="sFrm">
+			<input type="hidden" name="boardIdx" id="boardIdx" value=""/>
+		</form>
+
+		<table class="table table-bordered neo_table">
+			<colgroup>
+			<col width="3%">
+			<col width="20%">
+			<col width="20%">
+			<col width="5%">
+			<col width="10%">
+			<col width="10%">
+			<col width="10%">
+			<col width="10%">
+			</colgroup>
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">제목</th>
+				<th scope="col">내용</th>
+				<th scope="col">조회수</th>
+				<th scope="col">작성자</th>
+				<th scope="col">작성일</th>
+				<th scope="col">게시 상태</th>
+				<th scope="col">-</th>
+			</tr>
+			<tbody>
+			<tr th:if="${totalCnt} > 0" th:each="list,status : ${list}">
+				<td th:text="${status.index+1}">index</td>
+				<td>
+					<a th:href="@{/board/detail(boardIdx=${list.boardIdx})}" th:text="${list.title}"></a>
+				</td>
+				<td>
+					<a th:href="@{/board/detail(boardIdx=${list.boardIdx})}" th:text="${list.contents}"></a>
+				</td>
+				<td th:text="${list.hitCnt}">hitCnt</td>
+				<td th:text="${list.regId}">regId</td>
+				<td th:text="${list.regDate}">regDate</td>
+				<td>
+					<input type="checkbox" name="displayYn" th:checked="${list.displayYn == 'Y'}" 
+						data-toggle="toggle" data-on="노출" data-off="숨김" data-onstyle="success" data-offstyle="danger" disabled>
+				</td>
+				<td>
+					<button type="button" class="btn btn-outline-primary" th:onclick="|javascript:fnGoForm(${list.boardIdx})|">수정</button>
+				</td>
+			</tr>	
+			<tr th:unless="${totalCnt} > '0'">
+				<td colspan="9">게시물 없음</td>
+			</tr>
+			</tbody>
+		</table>
+		
+		<div>
+			<button type="button" class="btn btn-primary" th:onclick="|javascript:fnGoForm()|">새로 등록</button>
+		</div>
+	</div>
+	
+<script>
+function fnGoForm (boardIdx) {
+	var f = document.querySelector('form[name=sFrm]');
+	f.boardIdx.value = getStr(boardIdx);
+	f.action = '/board/form';
+	f.method = 'get';
+	f.submit();
+}
+</script>
+
+</body>
+</html>
